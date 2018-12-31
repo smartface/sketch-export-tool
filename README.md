@@ -9,7 +9,7 @@ The plugin help the developer easy to transform **Sketch** mobile application de
 -   Double-click on smartface.sketchplugin
 # Instructions
 
-After openning Sketch design click the plugins , select the **smatface**
+After opening Sketch design click the plugins , select the **smatface**
 
  - **Window** ( The window you can set the objects setting such as smarface type, name , class , layout , export e.t.c.  )
  - **Export All** ( Export the all pages )
@@ -24,7 +24,7 @@ You should visit the [link](http://ref.smartface.io) which help you learn what i
 ### Export : 
 
 - **Page** , **ImageObject** and **Library** which is exportable components.
-- You should should change the computer file properties show the hidden file because exported file ( .ui ) is hidden file .
+- You should change the computer file properties show the hidden file because exported file ( .ui ) is hidden file .
  
   ![  ](https://github.com/smartface/sketch-export-tool/blob/master/gifs/export.gif)
 
