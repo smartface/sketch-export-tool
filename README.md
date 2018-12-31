@@ -5,8 +5,8 @@ The plugin help the developer easy to transform **Sketch** mobile application de
 
 # Installation
 - <a href="https://github.com/smartface/sketch-export-tool/raw/master/smartface.sketchplugin.zip" target="blank">Download</a> the latest release of the plugin
--   Unzip
--   Double-click on smartface.sketchplugin
+-   Unzip the smartface.sketchplugin.zip file 
+-   Double-click on smartface.sketchplugin for setup
 # Instructions
 
 After opening Sketch design click the plugins , select the **smatface**
