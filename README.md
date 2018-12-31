@@ -19,12 +19,14 @@ You should visit the [link](http://ref.smartface.io) which help you learn what i
 
 - The user should be Group the Sketch objects which are the assign Smartface type 
 - The Sketch Library Object should be Detach from Symbol 
+
  ![  ](https://github.com/smartface/sketch-export-tool/blob/master/gifs/setObject.gif)
 ### Export : 
 
 - **Page** , **ImageObject** and **Library** which is exportable components.
 - You should should change the computer file properties show the hidden file because exported file ( .ui ) is hidden file .
  
+  ![  ](https://github.com/smartface/sketch-export-tool/blob/master/gifs/export.gif)
 
 ### After Export :
 - Open your [Smartface](https://cloud.smartface.io/) project 
@@ -32,3 +34,4 @@ You should visit the [link](http://ref.smartface.io) which help you learn what i
 - Click the Overwrite All  
 - All components are absolute layout if you want to change you should use Smartface cloud ide`s positioning and Flex Properties .
  
+  ![  ](https://github.com/smartface/sketch-export-tool/blob/master/gifs/afterExport.gif)
