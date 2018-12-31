@@ -1,0 +1,21 @@
+{
+    "compatibleVersion": 3,
+    "bundleVersion": 1,
+    "icon": "icon.png",
+    "commands": [{
+        "name": "Export All",
+        "identifier": "map.all",
+        "script": "./main/mapAll.js"
+    }, {
+        "name": "Window",
+        "identifier": "sf_ui",
+        "script": "./smartfaceUI.js"
+    }],
+    "menu": {
+        "title": "smartface",
+        "items": [
+            "sf_ui",
+            "map.all"
+        ]
+    }
+}

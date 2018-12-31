@@ -1,0 +1,34 @@
+{
+  "name": "smartface",
+  "version": "0.1.2",
+  "engines": {
+    "sketch": ">=3.0"
+  },
+  "skpm": {
+    "name": "smartface",
+    "manifest": "src/manifest.json",
+    "main": "smartface.sketchplugin",
+    "assets": [
+      "assets/**/*"
+    ]
+  },
+  "scripts": {
+    "build": "skpm-build",
+    "watch": "skpm-build --watch",
+    "start": "skpm-build --watch --run",
+    "postinstall": "npm run build && skpm-link"
+  },
+  "devDependencies": {
+    "@skpm/builder": "^0.4.0",
+    "@skpm/extract-loader": "^1.0.1",
+    "css-loader": "^0.28.7",
+    "html-loader": "^0.5.1"
+  },
+  "resources": [
+    "resources/**/*.js"
+  ],
+  "dependencies": {
+    "sk-sketch-webview": "0.0.4",
+    "sketch-module-web-view": "^1.1.3"
+  }
+}

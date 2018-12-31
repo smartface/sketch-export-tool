@@ -1,0 +1,291 @@
+
+html{
+	box-sizing: border-box;
+    background: transparent;
+
+    /* Prevent the page to be scrollable */
+    overflow: hidden;
+
+    /* Force the default cursor, even on text */
+    cursor: default;
+
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+  	margin: 0;
+  	padding: 0;
+  	position: relative;
+  	-webkit-user-select: none;
+  	user-select: none;
+}
+
+input, textarea {
+  	-webkit-user-select: auto;
+  	user-select: auto;
+}
+
+body{
+
+	background-image: linear-gradient(-180deg, #FFFFFF 31%, #EDEDED 100%);
+	box-shadow: 0 1px 2px 0 rgba(0,0,0,0.17);
+	border-radius: 3px;
+}
+
+button {
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+}
+
+.smartfaceLogo{
+
+	width: 300px;
+	height: 53 px;
+	background-color: white;
+	right: 0px;
+}
+
+/* Frame Side */
+.objectFrame{
+	margin-top: 19px;
+	left: 10px;
+	right: 10px;
+}
+
+.objectFrame.object{
+	margin-top: 12px;
+	left: 32px;
+	position: absolute;
+	font-family: SF-Pro-Display-Semibold;
+	font-size: 14px;
+	color: #96A1A7;
+	opacity:  0.5;
+}
+
+.objectFrame.object.name{
+	opacity: 1;
+	left: 34px;
+	margin-top: 43px;	
+}
+
+.objectFrame.object.type{
+	opacity: 1;
+	left: 34px;
+	margin-top: 104px;
+}
+
+.objectFrame.nameText{
+	height: 28px;
+	width: 250px;
+	left: 25px;
+	margin-top: 64px;
+	position: absolute;
+	border: 1px solid #ACACAC;
+	box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06);
+	border-radius: 4px;
+	outline: none;
+	padding-left:5px;
+	visibility:hidden;
+	font: 14px SF-Pro-Text-Regular;
+}
+
+.objectFrame.nameText.label{
+	padding-top: 5px;
+	padding-left:10px;
+	visibility:visible;
+}
+
+
+.objectFrame.dropDown{
+	height: 28px;
+	width: 250px;
+	left: 25px;
+	margin-top: 125px;
+	position: absolute;
+	border: 1px solid #ACACAC;
+	box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06);
+	border-radius: 4px;
+	outline: none;
+	background-color: white;
+}
+
+.objectFrame.checkBox{
+	left: 27px;
+	height: 14px;
+	width: 14px;
+	margin-top: 166px;
+	position: absolute;
+}
+.objectFrame.addLib{
+	left: 48px;
+	margin-top: 165px;
+	position: absolute;
+	color: #252525;
+	font: 15px SF-Pro-Text-Regular;
+}
+.objectFrame.info{
+	left: 158px;
+	margin-top: 166px;
+	position: absolute;
+}
+
+/* Class Side */
+.classFrame{
+	margin-top: 12px;
+	left: 10px;
+	right: 10px;
+}
+
+.classFrame.class{
+	margin-top: 5px;
+	left: 32px;
+	position: absolute;
+	font-family: SF-Pro-Display-Semibold;
+	font-size: 14px;
+	color: #96A1A7;
+	opacity:  0.5;
+}
+
+.classFrame.class.name {
+	margin-top: 36px;
+	left: 34px;
+	opacity:1;
+}
+
+.classFrame.class.layout {
+	margin-top: 120px;
+	left: 34px;
+	opacity:1;
+}
+
+.classFrame.nameText{
+	height: 28px;
+	width: 250px;
+	left: 25px;
+	margin-top: 57px;
+	position: absolute;
+	border: 1px solid #ACACAC;
+	box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06);
+	border-radius: 4px;
+	outline: none;
+	padding-left:5px;
+	visibility:hidden;
+	font: 14px SF-Pro-Text-Regular;
+	background-color: white;
+}
+
+.classFrame.nameText.label{
+	padding-top: 5px;
+	padding-left:10px;
+	visibility:visible;
+}
+
+
+.classFrame.layoutImage{
+	margin-top: 100px;
+	left: 121px;
+	position: absolute;
+}
+
+.classFrame.layoutUp{
+
+	margin-top: 101px;
+	left: 132px;
+	height: 15px;
+	width: 35px;
+	position: absolute;
+}
+.classFrame.layoutUp.paint{
+	background-color: #D1D1D1;
+}
+
+.classFrame.layoutRight{
+
+	margin-top: 111px;
+	left: 164px;
+	height: 30px;
+	width: 15px;
+	position: absolute;
+}
+.classFrame.layoutRight.paint{
+	background-color: #D1D1D1;
+	left: 162px;
+}
+
+.classFrame.layoutLeft{
+
+	margin-top: 111px;
+	left: 121px;
+	height: 30px;
+	width: 15px;
+	position: absolute;
+}
+.classFrame.layoutLeft.paint{
+	background-color: #D1D1D1;
+	left: 123px;
+}
+
+.classFrame.layoutBottom{
+
+	margin-top: 138px;
+	left: 136px;
+	height: 15px;
+	width: 30px;
+	position: absolute;
+}
+.classFrame.layoutBottom.paint{
+	background-color: #D1D1D1;
+}
+
+/* Export Button */
+.exportButton{
+	margin-top: 9px;
+	left: 10px;
+	right: 10px;
+	cursor: pointer;
+}
+.exportButton.disable{
+	margin-top: 150px;
+	position: absolute;
+	visibility: hidden;
+}
+.exportButton.disable:hover {
+  animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+@font-face {
+	font-family: "SF-Pro-Display-Semibold";
+	font-weight: 900;
+	src: "fonts/SF-Pro-Display-Semibold.otf" format('opentype');
+}
+
+@font-face {
+	font-family: "SF-Pro-Text-Regular";
+	font-weight: 900;
+	src: "fonts/SF-Pro-Text-Regular.otf " format('opentype');
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
