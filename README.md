@@ -14,7 +14,7 @@ After opening Sketch design click the plugins , select the **smatface**
  - **Window** ( The window you can set the objects setting such as smartface type, name , class , layout , export etc.  )
  - **Export All** ( Export the all pages )
 
-You should visit the [link](http://ref.smartface.io) which help you learn what is the smartface type ?
+You should visit the [link](http://ref.smartface.io) which help you learn what is the smartface type.
 ### Set Object Settings :
 
 - The user should be Group the Sketch objects which are the assign Smartface type 
