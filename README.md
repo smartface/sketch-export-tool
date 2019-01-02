@@ -1,37 +1,33 @@
-# Sketch to Smartface Plugin
+# Sketch Export Tool
 
-The plugin help the developer easy to transform **Sketch** mobile application design to  **Smartface** .   
+A Sketch plugin that exports **Sketch** artboards into **Smartface** project
 
-
-# Installation
+## Installation
 - <a href="https://github.com/smartface/sketch-export-tool/raw/master/smartface.sketchplugin.zip" target="blank">Download</a> the latest release of the plugin
--   Unzip the smartface.sketchplugin.zip file 
--   Double-click on smartface.sketchplugin for setup
-# Instructions
+-   Unzip the **smartface.sketchplugin.zip** file 
+-   Double-click on **smartface.sketchplugin** for setup
 
-After opening Sketch design click the plugins , select the **smatface**
+## Usage
 
- - **Window** ( The window you can set the objects setting such as smartface type, name , class , layout , export etc.  )
- - **Export All** ( Export the all pages )
+- Double click your Sketch design file
+- Go to the top menu
+- Click *Plugins*
+- Select *Smartface*
 
-You should visit the [link](http://ref.smartface.io) which help you learn what is the smartface type.
-### Set Object Settings :
+![  ](https://github.com/smartface/sketch-export-tool/blob/master/gifs/setObject.gif)
 
-- The user should be Group the Sketch objects which are the assign Smartface type 
-- The Sketch Library Object should be Detach from Symbol 
+![  ](https://github.com/smartface/sketch-export-tool/blob/master/gifs/export.gif)
 
- ![  ](https://github.com/smartface/sketch-export-tool/blob/master/gifs/setObject.gif)
-### Export : 
+### After export operations
+- Go to your [Smartface](https://cloud.smartface.io/) project 
+- Upload exported contents to your workspace
+- Select "Overwrite All" option 
+- All componens will have **ABSOLUTE** positioning. Which means developer should
+manually change all positionings to **RELATIVE** and should set flex properties
+accordingly
 
-- **Page** , **ImageObject** and **Library** which is exportable components.
-- You should change the computer file properties show the hidden file because exported file ( .ui ) is hidden file .
- 
-  ![  ](https://github.com/smartface/sketch-export-tool/blob/master/gifs/export.gif)
+![  ](https://github.com/smartface/sketch-export-tool/blob/master/gifs/afterExport.gif)
 
-### After Export :
-- Open your [Smartface](https://cloud.smartface.io/) project 
-- Drag and Drop Exported file ( .ui , images ) on to your project file structure 
-- Click the Overwrite All  
-- All components are absolute layout if you want to change you should use Smartface cloud ide`s positioning and Flex Properties .
- 
-  ![  ](https://github.com/smartface/sketch-export-tool/blob/master/gifs/afterExport.gif)
+### NOTES
+- Don't forget to change your folder visibility settings of your computer. 
+sketch-export-tool will generate folders that are hidden such as **.ui**
