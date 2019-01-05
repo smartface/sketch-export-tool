@@ -6,7 +6,7 @@
 A Sketch plugin that exports **Sketch** artboards into **Smartface** project
 
 ## Installation
-- <a href="https://github.com/smartface/sketch-export-tool/raw/master/smartface.sketchplugin.zip" target="blank">Download</a> the latest release of the plugin
+- <a href="https://github.com/smartface/sketch-export-tool/releases/download/v0.1.2/smartface.sketchplugin.zip" target="blank">Download</a> the latest release of the plugin
 -   Unzip the **smartface.sketchplugin.zip** file 
 -   Double-click on **smartface.sketchplugin** for setup
 
