@@ -17,9 +17,7 @@ A Sketch plugin that exports **Sketch** artboards into **Smartface** project
 - Click *Plugins*
 - Select *Smartface*
 
-![  ](https://github.com/smartface/sketch-export-tool/blob/master/gifs/setObject.gif)
-
-![  ](https://github.com/smartface/sketch-export-tool/blob/master/gifs/export.gif)
+![  ](https://github.com/smartface/sketch-export-tool/blob/master/gifs/part1.gif)
 
 ### After export operations
 - Go to your [Smartface](https://cloud.smartface.io/) project 
@@ -28,8 +26,6 @@ A Sketch plugin that exports **Sketch** artboards into **Smartface** project
 - All componens will have **ABSOLUTE** positioning. Which means developer should
 manually change all positionings to **RELATIVE** and should set flex properties
 accordingly
-
-![  ](https://github.com/smartface/sketch-export-tool/blob/master/gifs/afterExport.gif)
 
 ### NOTES
 - Don't forget to change your folder visibility settings of your computer. 
