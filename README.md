@@ -1,3 +1,6 @@
+[![Twitter: @Smartface_io](https://img.shields.io/badge/contact-@Smartface_io-blue.svg?style=flat)](https://twitter.com/smartface_io)
+![](https://img.shields.io/badge/status-beta-yellow.svg)
+
 # Sketch Export Tool
 
 A Sketch plugin that exports **Sketch** artboards into **Smartface** project
