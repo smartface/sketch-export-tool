@@ -194,9 +194,6 @@ function exportAllFonts(fonts) {
     log(folderObject.contentsOfDirectoryAtPath('/System/Library/Fonts/', nil))
 }
 
-function exit(message) {
-    UI.message("Erorr " + " \"" + message + "\" is not a valid directory !!");
-}
 
 module.exports = {
     write_file,

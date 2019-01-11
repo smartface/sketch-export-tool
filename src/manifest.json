@@ -3,16 +3,16 @@
     "bundleVersion": 1,
     "icon": "icon.png",
     "commands": [{
-        "name": "Export All",
+        "name": "Export All Pages",
         "identifier": "map.all",
         "script": "./main/mapAll.js"
     }, {
-        "name": "Window",
+        "name": "Show",
         "identifier": "sf_ui",
         "script": "./smartfaceUI.js"
     }],
     "menu": {
-        "title": "smartface",
+        "title": "Smartface",
         "items": [
             "sf_ui",
             "map.all"

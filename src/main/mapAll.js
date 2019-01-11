@@ -1,4 +1,3 @@
-const sketch = require('sketch');
 import {
     mapAllPages
 } from './sketchToSmartface';

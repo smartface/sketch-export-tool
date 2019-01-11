@@ -29,6 +29,11 @@ document.getElementById('setName').addEventListener("keydown", function(e) {
 document.getElementById('className').addEventListener('dblclick', function() {
     document.getElementById('setClass').style.visibility = "visible";
     document.getElementById('className').style.visibility = "hidden";
+    let oldClassName = document.getElementById('className').innerHTML;
+    if (oldClassName != "Type Class Name")
+        document.getElementById('setClass').value = oldClassName;
+    else
+        document.getElementById('setClass').value = '';
 });
 
 document.getElementById('setClass').addEventListener("keydown", function(e) {
@@ -76,19 +81,19 @@ document.getElementById('leftBtn').addEventListener("click", function() {
 
 
 // called from the plugin
-window.setLayerName = function(data) {
+window.setShow = function(data) {
 
     var name = data.name;
     var type = data.type;
-    var nameCheck = data.nameCheck;
+    //var nameCheck = data.nameCheck;
     var className = data.className;
     var library = data.library;
-    var allresize = data.allresize;
+
 
     if (data.changed == "true")
         setBackTheUI();
 
-    coloredResizeButtons(allresize);
+    resizeBoxSet(data);
 
     if (type === "shape" || type === "page") {
         exportButtonVisibility("visible");
@@ -112,25 +117,44 @@ window.setLayerName = function(data) {
             document.getElementById('name_rectangle').className = "sk-asset name_rectangle warning";
     }
     */
-
+    if (name == null)
+        name = " "
     document.getElementById('layerName').innerHTML = name;
     classNameShow(className);
-    if (type == "null") {
+    if (type == "null" || type == null) {
         //document.getElementById('sf_rectangle').className = "sk-asset sf_rectangle warning";
-        var item = document.getElementById("sf_type_list");
+        let item = document.getElementById("sf_type_list");
         item.selectedIndex = 0; // 0 index => NAN
         exportButtonVisibility("hidden");
 
     } else {
         //document.getElementById('sf_rectangle').className = "sk-asset sf_rectangle success";
-        var item = document.getElementById("sf_type_list");
-        for (var i = 0; i < item.options.length; i++) {
+        let item = document.getElementById("sf_type_list");
+        for (let i = 0; i < item.options.length; i++) {
             if (item.options[i].value == type) {
                 item.selectedIndex = i;
                 break;
             }
         }
     }
+}
+
+
+function resizeBoxSet(data) {
+    let allresize = data.allresize;
+    let warn = data.resizeWarn;
+    /*
+    if (warn == 'true') {
+        document.getElementById('layoutImage').className = "classFrame layoutImage warn";
+        document.getElementById("test").innerHTML = "BURADA";
+    } else {
+        //document.getElementById('layoutImage').className = "classFrame layoutImage";
+        document.getElementById("test").innerHTML = warn;
+        document.getElementById('layoutImage').className = "classFrame layoutImage warn";
+    }
+    */
+    coloredResizeButtons(allresize);
+
 }
 
 function exportButtonVisibility(visibility) {
@@ -169,7 +193,7 @@ function coloredResizeButtons(allresize) {
 }
 
 function classNameShow(className) {
-    if (className == "null") {
+    if (className == "null" || className == null) {
         document.getElementById('className').innerHTML = 'Type Class Name';
     } else
         document.getElementById('className').innerHTML = className;

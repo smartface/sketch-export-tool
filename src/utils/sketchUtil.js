@@ -125,7 +125,6 @@ function fill_text_object(sketch_component) {
     var txJson = sketchToJson(sketch_component);
     var attributes = txJson.attributedString.value.attributes[0];
     var alignment = attributes.NSParagraphStyle.style.alignment; // horizontal alignment
-    var test = attributes.textStyleVerticalAlignmentKey
 
     textObj.font = attributes.NSFont.attributes.NSFontNameAttribute;
     textObj.text = txJson.attributedString.value.text;
@@ -134,9 +133,9 @@ function fill_text_object(sketch_component) {
 
     if (attributes.MSAttributedStringTextTransformAttribute != null) {
         if (attributes.MSAttributedStringTextTransformAttribute == 1) // uppercase
-            textObj.text = String(textObj.text).toUpperCase('tr-TR');
+            textObj.text = String(textObj.text).toLocaleUpperCase('TR');
         else if (attributes.MSAttributedStringTextTransformAttribute == 2) // lowercase  
-            textObj.text = String(textObj.text).toLowerCase('tr-TR');
+            textObj.text = String(textObj.text).toLocaleLowerCase('tr');
     }
     textObj.horizontalAlignment = horizontalAlignment.get(alignment) || HORIZONTAL_ALIGNMENT_DEFAULT;
     textObj.verticalAlignment = "MID";

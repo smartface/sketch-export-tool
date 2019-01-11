@@ -1,6 +1,5 @@
 const pageComponent = require('./smartfaceComponentFactory');
 const smartfaceUtil = require('../utils/smartfaceUtil');
-const UI = require('sketch/ui');
 var pgxPages = [];
 var cpxPages = [];
 var mappedLibrary = new Map();
@@ -10,7 +9,7 @@ function smartfaceMapper(pages) {
     pgxPages = [];
     cpxPages = [];
     for (let iter in pages) {
-        let pgxPage = createPgxPage(pages[iter]);
+        let pgxPage = createPgx(pages[iter]);
         if (pgxPage != null) {
             pgxPages.push(pgxPage);
         }
@@ -21,66 +20,31 @@ function smartfaceMapper(pages) {
     }
 }
 
-
 function mapPageComponent(smartfacePage, sketchComponent) {
 
-    if (sketchComponent == null)
-        return;
-
-    for (var iter in sketchComponent) {
-        var smartfaceComponent = selectComponentType(sketchComponent[iter]);
-        if (smartfaceComponent != null) {
-            smartfacePage.components.push(smartfaceComponent);
-            if (smartfaceComponent.type != "GridViewItem" && smartfaceComponent.type != "ListViewItem" &&
-                sketchComponent[iter].lib.isLib == false)
-                mapPageComponent(smartfacePage, sketchComponent[iter].children);
-
-            if (sketchComponent[iter].lib.isLib == true) {
-                for (var iter in smartfacePage.components)
-                    for (var iter2 in smartfacePage.components[iter].props.children)
-                        if (smartfacePage.components[iter].props.children[iter2] == smartfaceComponent.id) {
-                            var id = smartfaceUtil.guid();
-                            smartfacePage.components[iter].props.children[iter2] = id;
-                            smartfaceComponent.id = id;
-                        }
+    if (sketchComponent != null)
+        for (var iter in sketchComponent) {
+            let smartfaceComponent = selectComponentType(sketchComponent[iter]);
+            if (smartfaceComponent != null) {
+                smartfacePage.components.push(smartfaceComponent);
+                if (sketchComponent[iter].lib.isLib) {
+                    for (let iter1 in smartfacePage.components)
+                        for (let iter2 in smartfacePage.components[iter1].props.children)
+                            if (smartfacePage.components[iter1].props.children[iter2] == smartfaceComponent.id) {
+                                let id = smartfaceUtil.guid();
+                                smartfacePage.components[iter1].props.children[iter2] = id;
+                                smartfaceComponent.id = id;
+                            }
+                } else
+                    mapPageComponent(smartfacePage, sketchComponent[iter].children);
             }
         }
-    }
 }
 
 function selectComponentType(sketchComponent) {
     if (sketchComponent == null)
         return;
-
-    var smartfaceComponent;
-    var type = sketchComponent.type;
-    if (type == "listview" || type == "gridview")
-        smartfaceComponent = pageComponent.createGridListView(sketchComponent);
-    else if (type == "mapview" || type == "videoview" || type == "webview")
-        smartfaceComponent = pageComponent.createMapVideoWebView(sketchComponent);
-    else if (type == "flexlayout" || type == "scrollview")
-        smartfaceComponent = pageComponent.createMultiComponent(sketchComponent);
-    else if (type == "textbox" || type == "textarea")
-        smartfaceComponent = pageComponent.createTextBoxArea(sketchComponent);
-    else if (type == "button")
-        smartfaceComponent = pageComponent.createButton(sketchComponent);
-    else if (type == "imageview")
-        smartfaceComponent = pageComponent.createImageView(sketchComponent);
-    else if (type == "label")
-        smartfaceComponent = pageComponent.createLabel(sketchComponent);
-    else if (type == "slider")
-        smartfaceComponent = pageComponent.createSlider(sketchComponent);
-    else if (type == "switch")
-        smartfaceComponent = pageComponent.createSwitch(sketchComponent);
-    else if (type == "textview")
-        smartfaceComponent = pageComponent.createTextView(sketchComponent);
-    else if (type == "searchview")
-        smartfaceComponent = pageComponent.createSearchView(sketchComponent);
-    else if (type == "listviewitem" || type == "gridviewitem") {
-        smartfaceComponent = pageComponent.createGridListView(sketchComponent);
-        createCpx(smartfaceComponent, sketchComponent);
-    }
-
+    let smartfaceComponent = createSmartfaceObject(sketchComponent);
     if (sketchComponent.lib.isLib == true) {
         createCpx(smartfaceComponent, sketchComponent);
     } else {
@@ -92,11 +56,8 @@ function selectComponentType(sketchComponent) {
 }
 
 
-function createPgxPage(sketchPage) {
-    var pgxPage;
-    if (sketchPage == null)
-        return pgxPage;
-
+function createPgx(sketchPage) {
+    var pgxPage = null;
     if (sketchPage.type == "page" || sketchPage.type == "library") {
         pgxPage = pageComponent.createPage(sketchPage);
         mapPageComponent(pgxPage, sketchPage.children);
@@ -126,33 +87,10 @@ function createCpx(cpxComponent, sketchComponent) {
     var cpxPage = {
         components: []
     };
-    var smartfaceComponent;
-    var type = sketchComponent.type;
+
     var savedID = sketchComponent.id;
     sketchComponent.id = sketchComponent.lib.libID;
-
-    if (type == "listview" || type == "gridview" || type == "listviewitem" || type == "gridviewitem")
-        smartfaceComponent = pageComponent.createGridListView(sketchComponent);
-    else if (type == "mapview" || type == "videoview" || type == "webview")
-        smartfaceComponent = pageComponent.createMapVideoWebView(sketchComponent);
-    else if (type == "flexlayout" || type == "scrollview")
-        smartfaceComponent = pageComponent.createMultiComponent(sketchComponent);
-    else if (type == "textbox" || type == "textarea")
-        smartfaceComponent = pageComponent.createTextBoxArea(sketchComponent);
-    else if (type == "button")
-        smartfaceComponent = pageComponent.createButton(sketchComponent);
-    else if (type == "imageview")
-        smartfaceComponent = pageComponent.createImageView(sketchComponent);
-    else if (type == "label")
-        smartfaceComponent = pageComponent.createLabel(sketchComponent);
-    else if (type == "slider")
-        smartfaceComponent = pageComponent.createSlider(sketchComponent);
-    else if (type == "switch")
-        smartfaceComponent = pageComponent.createSwitch(sketchComponent);
-    else if (type == "textview")
-        smartfaceComponent = pageComponent.createTextView(sketchComponent);
-    else if (type == "searchview")
-        smartfaceComponent = pageComponent.createSearchView(sketchComponent);
+    let smartfaceComponent = createSmartfaceObject(sketchComponent);
 
     mappedLibrary.set(sketchComponent.lib.libID, smartfaceComponent.props.name)
 
@@ -181,6 +119,32 @@ function createCpx(cpxComponent, sketchComponent) {
     }
 
     cpxPages.push(cpxPage);
+}
+
+function createSmartfaceObject(sketchComponent) {
+    let type = sketchComponent.type;
+    if (type == "listview" || type == "gridview" || type == "listviewitem" || type == "gridviewitem")
+        return pageComponent.createGridListView(sketchComponent);
+    else if (type == "mapview" || type == "videoview" || type == "webview")
+        return pageComponent.createMapVideoWebView(sketchComponent);
+    else if (type == "flexlayout" || type == "scrollview")
+        return pageComponent.createMultiComponent(sketchComponent);
+    else if (type == "textbox" || type == "textarea")
+        return pageComponent.createTextBoxArea(sketchComponent);
+    else if (type == "button")
+        return pageComponent.createButton(sketchComponent);
+    else if (type == "imageview")
+        return pageComponent.createImageView(sketchComponent);
+    else if (type == "label")
+        return pageComponent.createLabel(sketchComponent);
+    else if (type == "slider")
+        return pageComponent.createSlider(sketchComponent);
+    else if (type == "switch")
+        return pageComponent.createSwitch(sketchComponent);
+    else if (type == "textview")
+        return pageComponent.createTextView(sketchComponent);
+    else if (type == "searchview")
+        return pageComponent.createSearchView(sketchComponent);
 }
 
 module.exports = {

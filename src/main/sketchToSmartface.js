@@ -6,8 +6,7 @@
 import {
     exportImage,
     sketchParseAll,
-    sketchParseOnePage,
-    sketchParseLibrary
+    sketchParseOnePage
 } from '../sketch/sketchParser';
 
 import {
@@ -21,11 +20,11 @@ const sketch = require('sketch');
 function mapAllPages(context) {
     let currentPath = openDialog();
     if (currentPath != null) {
-        context.document.showMessage("🙌 MAPPING SMARTFACE 🙌")
+        context.document.showMessage("🙌 Mapping with Smartface objects in progress 🙌")
         let folders = outputUtil.creat_output_folders(currentPath, context.document.fileURL().path());
         let pagesTree = sketchParseAll(context, folders);
         if (pagesTree.length !== 0) {
-            context.document.showMessage("🙌 MAPPING SMARTFACE 🙌")
+            context.document.showMessage("🙌 Mapping with Smartface objects in progress 🙌")
             let smartfaceData = smartfaceMapper(pagesTree);
             if (smartfaceData.pgx.length !== 0) // Array of pages
                 outputUtil.write_datas(folders, smartfaceData);
@@ -47,11 +46,11 @@ function openDialog() {
 }
 
 function mapOnePage(context, page, folders, type) {
-    context.document.showMessage("🙌 MAPPING SMARTFACE 🙌")
+    context.document.showMessage("🙌 Mapping with Smartface objects in progress 🙌")
     var pagesTree = sketchParseOnePage(context, folders, page, type);
     if (pagesTree.length !== 0) {
         var smartfaceData = smartfaceMapper(pagesTree);
-        context.document.showMessage("🙌 MAPPING SMARTFACE 🙌")
+        context.document.showMessage("🙌 Mapping with Smartface objects in progress 🙌")
         if (smartfaceData.pgx.length !== 0) // Array of pages
             if (type[0] == "page")
                 outputUtil.write_datas(folders, smartfaceData);

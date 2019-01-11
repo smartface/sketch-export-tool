@@ -1,7 +1,5 @@
 const sketchUtil = require('../utils/sketchUtil');
 const outputUtil = require('../utils/outputUtil');
-const sketch = require('sketch');
-var Document = require('sketch/dom').Document
 
 /** 
     name : the name of the sketch page
@@ -109,7 +107,7 @@ function is_ImageView(type, sketch_component, pageTree, imageFolder) {
         sketch_component = sketch_component.layers[0];
 
     if (sketch_component.type == "Image" || sketchUtil.isShape(sketch_component) == true) {
-        var imJson = sketchUtil.sketchToJson(sketch_component);
+        let imJson = sketchUtil.sketchToJson(sketch_component);
         var imageType = [];
         imageType.push(imJson.name);
         imageType.push("image");
@@ -133,7 +131,7 @@ function is_ImageView(type, sketch_component, pageTree, imageFolder) {
                     flag = true;
             }
         } while (flag)
-        var imJson = sketchUtil.sketchToJson(component);
+        let imJson = sketchUtil.sketchToJson(component);
 
         if (component.type == "Image" || sketchUtil.isShape(component) == true) {
             imageView.image = imJson.name + ".png";
@@ -444,8 +442,8 @@ function is_TextView(type, sketch_component, pageTree) {
 
     if (sketch_component.type == "Text") {
 
-        var twJson = sketchUtil.sketchToJson(sketch_component);
-        var color = twJson.attributedString.value.attributes[0].MSAttributedStringColorAttribute.value;
+        let twJson = sketchUtil.sketchToJson(sketch_component);
+        let color = twJson.attributedString.value.attributes[0].MSAttributedStringColorAttribute.value;
         text_view.text.text = sketchUtil.fill_text_object(sketch_component);
         text_view.html = twJson.attributedString.value;
     }
@@ -458,8 +456,8 @@ function is_TextView(type, sketch_component, pageTree) {
         }
         if (component.type == "Text") {
 
-            var twJson = sketchUtil.sketchToJson(component);
-            var color = twJson.attributedString.value.attributes[0].MSAttributedStringColorAttribute.value;
+            let twJson = sketchUtil.sketchToJson(component);
+            let color = twJson.attributedString.value.attributes[0].MSAttributedStringColorAttribute.value;
             text_view.text.text = sketchUtil.fill_text_object(component);
             text_view.html = twJson.attributedString.value;
         }
@@ -486,7 +484,8 @@ function is_TextView(type, sketch_component, pageTree) {
 function is_MVW_View(type, sketch_component, pageTree) {
     var mvw_view = sketchUtil.createPageObject();
     var backgroundColor = sketchUtil.createColorObject();
-    sketchUtil.setFirstPropery(mvw_view, sketch_component);
+
+    sketchUtil.setFirstPropery(mvw_view, sketch_component, pageTree);
 
     if (type[2] == "true")
         sketchUtil.setLibProperty(mvw_view, sketch_component);

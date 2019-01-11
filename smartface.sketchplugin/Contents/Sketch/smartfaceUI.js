@@ -82,18 +82,12 @@ module.exports = require("sketch");
 
 /***/ }),
 /* 2 */
-/***/ (function(module, exports) {
-
-module.exports = require("sketch/dom");
-
-/***/ }),
-/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var documents = __webpack_require__(2).getDocuments();
+var documents = __webpack_require__(6).getDocuments();
 
 var _color = {
     alpha: null,
@@ -219,7 +213,6 @@ function fill_text_object(sketch_component) {
     var txJson = sketchToJson(sketch_component);
     var attributes = txJson.attributedString.value.attributes[0];
     var alignment = attributes.NSParagraphStyle.style.alignment; // horizontal alignment
-    var test = attributes.textStyleVerticalAlignmentKey;
 
     textObj.font = attributes.NSFont.attributes.NSFontNameAttribute;
     textObj.text = txJson.attributedString.value.text;
@@ -228,8 +221,8 @@ function fill_text_object(sketch_component) {
 
     if (attributes.MSAttributedStringTextTransformAttribute != null) {
         if (attributes.MSAttributedStringTextTransformAttribute == 1) // uppercase
-            textObj.text = String(textObj.text).toUpperCase('tr-TR');else if (attributes.MSAttributedStringTextTransformAttribute == 2) // lowercase  
-            textObj.text = String(textObj.text).toLowerCase('tr-TR');
+            textObj.text = String(textObj.text).toLocaleUpperCase('TR');else if (attributes.MSAttributedStringTextTransformAttribute == 2) // lowercase  
+            textObj.text = String(textObj.text).toLocaleLowerCase('tr');
     }
     textObj.horizontalAlignment = horizontalAlignment.get(alignment) || HORIZONTAL_ALIGNMENT_DEFAULT;
     textObj.verticalAlignment = "MID";
@@ -507,11 +500,11 @@ module.exports = {
 };
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* globals coscript, sketch */
-var fiberAvailable = __webpack_require__(5)
+var fiberAvailable = __webpack_require__(4)
 
 var setInterval
 var clearInterval
@@ -573,7 +566,7 @@ module.exports = {
 
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports) {
 
 module.exports = function () {
@@ -582,7 +575,7 @@ module.exports = function () {
 
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports) {
 
 function EventEmitter () {}
@@ -844,6 +837,12 @@ module.exports = EventEmitter
 
 
 /***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+module.exports = require("sketch/dom");
+
+/***/ }),
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1035,10 +1034,6 @@ function exportAllFonts(fonts) {
     log(folderObject.contentsOfDirectoryAtPath('/System/Library/Fonts/', nil));
 }
 
-function exit(message) {
-    UI.message("Erorr " + " \"" + message + "\" is not a valid directory !!");
-}
-
 module.exports = {
     write_file: write_file,
     imageExport: imageExport,
@@ -1068,7 +1063,7 @@ var _component = {
     type: "",
     userProps: {}
 };
-var sketchUtil = __webpack_require__(3);
+var sketchUtil = __webpack_require__(2);
 var UI = __webpack_require__(0);
 
 function sketchHTMLConverter(sketch_html) {
@@ -1296,7 +1291,7 @@ module.exports = {
 /***/ (function(module, exports, __webpack_require__) {
 
 /* globals coscript, sketch */
-var fiberAvailable = __webpack_require__(5)
+var fiberAvailable = __webpack_require__(4)
 
 var setTimeout
 var clearTimeout
@@ -1379,6 +1374,7 @@ exports['default'] = function (context) {
     var notify;
     var browserWindow = new _sketchModuleWebView2['default'](options);
     var webContents = browserWindow.webContents;
+    var resizeWarn = "false";
 
     // add a handler for a call from web content's javascript
     webContents.on('set-type', function (data) {
@@ -1388,10 +1384,7 @@ exports['default'] = function (context) {
 
         var sf_type = String(data);
 
-        if (isValidName(name, sf_type)) {
-            log("❌Component name is invalid❌");
-            UI.message("❌ Component name is invalid ❌");
-        }
+        if (isValidName(name, sf_type)) UI.message("❌ Invalid component name");
         context.command.setValue_forKey_onLayer_forPluginIdentifier(sf_type, "sf-tag", selectedLayer, 'smartface.io');
         if (sf_type == "listviewitem" || sf_type == "gridviewitem") context.command.setValue_forKey_onLayer_forPluginIdentifier("true", "sf-library", selectedLayer, 'smartface.io');
         setLibraryItem(selectedLayer, sf_type);
@@ -1402,12 +1395,12 @@ exports['default'] = function (context) {
     webContents.on('set-class', function (data) {
         var selectedLayer = context.document.selectedLayers().firstLayer();
         var sfClass = String(data);
-        if (sfClass != null) {
+        if (sfClass !== "") {
             context.command.setValue_forKey_onLayer_forPluginIdentifier(sfClass, "sf-class", selectedLayer, 'smartface.io');
             addClassNames(allClassNames, sfClass);
             context.document.saveDocument(nil);
-            UI.message("Class Perfect Set ✅");
-        } else UI.message("❌ Something Wrong Class Not Assigned");
+            UI.message("✅ Class name assignment successful");
+        } else UI.message("❌ Class name could not be assigned, please specify a new name");
     });
 
     webContents.on('exportbtn', function (data) {
@@ -1419,10 +1412,10 @@ exports['default'] = function (context) {
     webContents.on('set-library', function (data) {
         var selectedLayer = context.document.selectedLayers().firstLayer();
         var sfLib = String(data);
-        if (sfLib != null && selectedLayer != null) {
+        if (sfLib !== "" && selectedLayer != null) {
             context.command.setValue_forKey_onLayer_forPluginIdentifier(sfLib, "sf-library", selectedLayer, 'smartface.io');
             context.document.saveDocument(nil);
-            if (sfLib == "false") UI.message("Library Disabled ✅");else UI.message("Library Perfect Set ✅");
+            if (sfLib == "false") UI.message("✅ Object removed from the library items");else UI.message("✅ Object set as a library item ");
         } else UI.message("❌ Something Wrong Library Not Assigned");
     });
 
@@ -1480,11 +1473,12 @@ exports['default'] = function (context) {
                 className: String(className),
                 library: String(library),
                 allresize: JSON.parse(allresize),
-                changed: changed
+                changed: changed,
+                resizeWarn: resizeWarn
             });
-            // UI.message(String(data.className))
-            webContents.executeJavaScript('setLayerName(' + String(data) + ')');
-        } else webContents.executeJavaScript('setLayerName({})');
+
+            webContents.executeJavaScript('setShow(' + String(data) + ')');
+        } else webContents.executeJavaScript('setShow({})');
 
         if (browserWindow.isDestroyed()) {
             UI.message("😱");
@@ -1502,7 +1496,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 var mapper = __webpack_require__(22);
 var UI = __webpack_require__(0);
 var sketch = __webpack_require__(1);
-var documents = __webpack_require__(2).getDocuments();
+var documents = __webpack_require__(6).getDocuments();
 
 //var nameCheck = require('./isValidName');
 
@@ -1558,12 +1552,12 @@ function setLibraryItem(layer, sf_type) {
         for (var i = 0; i < documents.length; i++) {
             var val = documents[i].getSymbolMasterWithID(item.symbolId);
             if (val != null) {
-                var d = context_.command.setValue_forKey_onLayer_forPluginIdentifier(sf_type, "sf-tag", val.sketchObject, 'smartface.io');
-                UI.message("✅ Perfect Set Object & SymbolInstance");
+                context_.command.setValue_forKey_onLayer_forPluginIdentifier(sf_type, "sf-tag", val.sketchObject, 'smartface.io');
+                UI.message("✅ Object & SymbolInstance matching successful");
                 val = null;
             }
         }
-    } else UI.message("✅ Perfect Set");
+    } else UI.message("✅ Type assignment successful");
 }
 
 /**
@@ -1576,7 +1570,8 @@ function setResize(layer, resize) {
     if (resizeCheck(resizeObject, resize)) {
         resizeObject[resize] = !resizeObject[resize];
         context_.command.setValue_forKey_onLayer_forPluginIdentifier(JSON.stringify(resizeObject), "sf-resize", layer, 'smartface.io');
-    }
+        resizeWarn = "false";
+    } else resizeWarn = "true";
 }
 
 function resizeCheck(resizeObject, resize) {
@@ -1592,18 +1587,19 @@ function creteResize(layer) {
         right: false
     };
     context_.command.setValue_forKey_onLayer_forPluginIdentifier(JSON.stringify(resizeObject), "sf-resize", layer, 'smartface.io');
+    return resizeObject;
 }
 
 function getResize(layer) {
     return context_.command.valueForKey_onLayer_forPluginIdentifier("sf-resize", layer, 'smartface.io');
 }
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)["setInterval"], __webpack_require__(4)["clearInterval"]))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)["setInterval"], __webpack_require__(3)["clearInterval"]))
 
 /***/ }),
 /* 11 */
 /***/ (function(module, exports) {
 
-module.exports = "file://" + context.plugin.urlForResourceNamed("_webpack_resources/6bf6581581a47ddfaccc2ca4c9611c5f.html").path();
+module.exports = "file://" + context.plugin.urlForResourceNamed("_webpack_resources/b43e15dc6c53d90feec630f8d1546bf2.html").path();
 
 /***/ }),
 /* 12 */
@@ -1611,7 +1607,7 @@ module.exports = "file://" + context.plugin.urlForResourceNamed("_webpack_resour
 
 /* let's try to match the API from Electron's Browser window
 (https://github.com/electron/electron/blob/master/docs/api/browser-window.md) */
-var EventEmitter = __webpack_require__(6)
+var EventEmitter = __webpack_require__(5)
 var buildBrowserAPI = __webpack_require__(13)
 var buildWebAPI = __webpack_require__(14)
 var fitSubviewToView = __webpack_require__(15)
@@ -2494,7 +2490,7 @@ module.exports = function(browserWindow, panel, webview) {
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var EventEmitter = __webpack_require__(6)
+var EventEmitter = __webpack_require__(5)
 
 // let's try to match https://github.com/electron/electron/blob/master/docs/api/web-contents.md
 module.exports = function buildAPI(browserWindow, panel, webview) {
@@ -3061,11 +3057,11 @@ var sketch = __webpack_require__(1);
 function mapAllPages(context) {
     var currentPath = openDialog();
     if (currentPath != null) {
-        context.document.showMessage("🙌 MAPPING SMARTFACE 🙌");
+        context.document.showMessage("🙌 Mapping with Smartface objects in progress 🙌");
         var folders = outputUtil.creat_output_folders(currentPath, context.document.fileURL().path());
         var pagesTree = (0, _sketchParser.sketchParseAll)(context, folders);
         if (pagesTree.length !== 0) {
-            context.document.showMessage("🙌 MAPPING SMARTFACE 🙌");
+            context.document.showMessage("🙌 Mapping with Smartface objects in progress 🙌");
             var smartfaceData = (0, _smartfaceMapper.smartfaceMapper)(pagesTree);
             if (smartfaceData.pgx.length !== 0) // Array of pages
                 outputUtil.write_datas(folders, smartfaceData);else exit(2);
@@ -3083,11 +3079,11 @@ function openDialog() {
 }
 
 function mapOnePage(context, page, folders, type) {
-    context.document.showMessage("🙌 MAPPING SMARTFACE 🙌");
+    context.document.showMessage("🙌 Mapping with Smartface objects in progress 🙌");
     var pagesTree = (0, _sketchParser.sketchParseOnePage)(context, folders, page, type);
     if (pagesTree.length !== 0) {
         var smartfaceData = (0, _smartfaceMapper.smartfaceMapper)(pagesTree);
-        context.document.showMessage("🙌 MAPPING SMARTFACE 🙌");
+        context.document.showMessage("🙌 Mapping with Smartface objects in progress 🙌");
         if (smartfaceData.pgx.length !== 0) {
                 // Array of pages
                 if (type[0] == "page") outputUtil.write_datas(folders, smartfaceData);else outputUtil.writeLibrary(folders, smartfaceData);
@@ -3135,14 +3131,13 @@ module.exports = {
 "use strict";
 
 
-var sketchUtil = __webpack_require__(3);
+var sketchUtil = __webpack_require__(2);
 var pageComponent = __webpack_require__(24);
 var sketch = __webpack_require__(1);
 var UI = __webpack_require__(0);
 var getValueFromPlugin;
 var imageFolder;
 var context_;
-var documents = __webpack_require__(2).getDocuments();
 
 function sketchParseAll(context, folders) {
     var pages = [];
@@ -3172,7 +3167,6 @@ function sketchParseOnePage(context, folders, page, type) {
     getValueFromPlugin = context.command.valueForKey_onLayer_forPluginIdentifier;
     imageFolder = folders.imageFolder;
     context_ = context;
-    //context.document.showMessage("🙌 MAPPING SMARTFACE 🙌")
     var pageTreeComp = sketchUtil.createPageObject();
     if (type[0] == "page") pageCreate(type, page, pageTreeComp);else libraryCreate(type, page, pageTreeComp);
     pages.push(pageTreeComp);
@@ -3218,12 +3212,11 @@ function selectComponentType(page, pageTree) {
 function multi_component(type, page, pageTree) {
     var tree = pageComponent.is_Multi_Component(type, page, pageTree);
     var _page = page;
-    if (tree != null) {
-        if (page.type == "SymbolInstance") {
-            _page = sketchUtil.symbolInstanceFinder(page);
-        }
-        pageComponentParse(_page, tree);
+
+    if (page.type == "SymbolInstance") {
+        _page = sketchUtil.symbolInstanceFinder(page);
     }
+    pageComponentParse(_page, tree);
 }
 
 function exportImage(layer, folders) {
@@ -3232,7 +3225,6 @@ function exportImage(layer, folders) {
     UI.message("✅ Image Exported");
 }
 
-/* type : page#on_button , image#bakgrnd */
 function splitType(page) {
     var type = getValueFromPlugin("sf-tag", page.sketchObject, 'smartface.io');
     var lib = getValueFromPlugin("sf-library", page.sketchObject, 'smartface.io');
@@ -3260,10 +3252,8 @@ module.exports = {
 "use strict";
 
 
-var sketchUtil = __webpack_require__(3);
+var sketchUtil = __webpack_require__(2);
 var outputUtil = __webpack_require__(7);
-var sketch = __webpack_require__(1);
-var Document = __webpack_require__(2).Document;
 
 /** 
     name : the name of the sketch page
@@ -3386,10 +3376,10 @@ function is_ImageView(type, sketch_component, pageTree, imageFolder) {
                 if (component.type == "SymbolInstance") flag = true;
             }
         } while (flag);
-        var imJson = sketchUtil.sketchToJson(component);
+        var _imJson = sketchUtil.sketchToJson(component);
 
         if (component.type == "Image" || sketchUtil.isShape(component) == true) {
-            imageView.image = imJson.name + ".png";
+            imageView.image = _imJson.name + ".png";
             is_Shape_Image("null", component, "null", imageFolder);
         } else if (component.type == "Shape") {
             imageView.border = sketchUtil.borderSet(component);
@@ -3710,10 +3700,10 @@ function is_TextView(type, sketch_component, pageTree) {
         }
         if (component.type == "Text") {
 
-            var twJson = sketchUtil.sketchToJson(component);
-            var color = twJson.attributedString.value.attributes[0].MSAttributedStringColorAttribute.value;
+            var _twJson = sketchUtil.sketchToJson(component);
+            var _color = _twJson.attributedString.value.attributes[0].MSAttributedStringColorAttribute.value;
             text_view.text.text = sketchUtil.fill_text_object(component);
-            text_view.html = twJson.attributedString.value;
+            text_view.html = _twJson.attributedString.value;
         }
         if (component.type == "Shape") {
             backgroundColor = sketchUtil.colorSet(component.style);
@@ -3738,7 +3728,8 @@ function is_TextView(type, sketch_component, pageTree) {
 function is_MVW_View(type, sketch_component, pageTree) {
     var mvw_view = sketchUtil.createPageObject();
     var backgroundColor = sketchUtil.createColorObject();
-    sketchUtil.setFirstPropery(mvw_view, sketch_component);
+
+    sketchUtil.setFirstPropery(mvw_view, sketch_component, pageTree);
 
     if (type[2] == "true") sketchUtil.setLibProperty(mvw_view, sketch_component);
 
@@ -4255,7 +4246,6 @@ module.exports.writeFileSync = function (path, data, options) {
 
 var pageComponent = __webpack_require__(27);
 var smartfaceUtil = __webpack_require__(8);
-var UI = __webpack_require__(0);
 var pgxPages = [];
 var cpxPages = [];
 var mappedLibrary = new Map();
@@ -4265,7 +4255,7 @@ function smartfaceMapper(pages) {
     pgxPages = [];
     cpxPages = [];
     for (var iter in pages) {
-        var pgxPage = createPgxPage(pages[iter]);
+        var pgxPage = createPgx(pages[iter]);
         if (pgxPage != null) {
             pgxPages.push(pgxPage);
         }
@@ -4278,39 +4268,28 @@ function smartfaceMapper(pages) {
 
 function mapPageComponent(smartfacePage, sketchComponent) {
 
-    if (sketchComponent == null) return;
-
-    for (var iter in sketchComponent) {
+    if (sketchComponent != null) for (var iter in sketchComponent) {
         var smartfaceComponent = selectComponentType(sketchComponent[iter]);
         if (smartfaceComponent != null) {
             smartfacePage.components.push(smartfaceComponent);
-            if (smartfaceComponent.type != "GridViewItem" && smartfaceComponent.type != "ListViewItem" && sketchComponent[iter].lib.isLib == false) mapPageComponent(smartfacePage, sketchComponent[iter].children);
-
-            if (sketchComponent[iter].lib.isLib == true) {
-                for (var iter in smartfacePage.components) {
-                    for (var iter2 in smartfacePage.components[iter].props.children) {
-                        if (smartfacePage.components[iter].props.children[iter2] == smartfaceComponent.id) {
+            if (sketchComponent[iter].lib.isLib) {
+                for (var iter1 in smartfacePage.components) {
+                    for (var iter2 in smartfacePage.components[iter1].props.children) {
+                        if (smartfacePage.components[iter1].props.children[iter2] == smartfaceComponent.id) {
                             var id = smartfaceUtil.guid();
-                            smartfacePage.components[iter].props.children[iter2] = id;
+                            smartfacePage.components[iter1].props.children[iter2] = id;
                             smartfaceComponent.id = id;
                         }
                     }
                 }
-            }
+            } else mapPageComponent(smartfacePage, sketchComponent[iter].children);
         }
     }
 }
 
 function selectComponentType(sketchComponent) {
     if (sketchComponent == null) return;
-
-    var smartfaceComponent;
-    var type = sketchComponent.type;
-    if (type == "listview" || type == "gridview") smartfaceComponent = pageComponent.createGridListView(sketchComponent);else if (type == "mapview" || type == "videoview" || type == "webview") smartfaceComponent = pageComponent.createMapVideoWebView(sketchComponent);else if (type == "flexlayout" || type == "scrollview") smartfaceComponent = pageComponent.createMultiComponent(sketchComponent);else if (type == "textbox" || type == "textarea") smartfaceComponent = pageComponent.createTextBoxArea(sketchComponent);else if (type == "button") smartfaceComponent = pageComponent.createButton(sketchComponent);else if (type == "imageview") smartfaceComponent = pageComponent.createImageView(sketchComponent);else if (type == "label") smartfaceComponent = pageComponent.createLabel(sketchComponent);else if (type == "slider") smartfaceComponent = pageComponent.createSlider(sketchComponent);else if (type == "switch") smartfaceComponent = pageComponent.createSwitch(sketchComponent);else if (type == "textview") smartfaceComponent = pageComponent.createTextView(sketchComponent);else if (type == "searchview") smartfaceComponent = pageComponent.createSearchView(sketchComponent);else if (type == "listviewitem" || type == "gridviewitem") {
-        smartfaceComponent = pageComponent.createGridListView(sketchComponent);
-        createCpx(smartfaceComponent, sketchComponent);
-    }
-
+    var smartfaceComponent = createSmartfaceObject(sketchComponent);
     if (sketchComponent.lib.isLib == true) {
         createCpx(smartfaceComponent, sketchComponent);
     } else {
@@ -4320,10 +4299,8 @@ function selectComponentType(sketchComponent) {
     return smartfaceComponent;
 }
 
-function createPgxPage(sketchPage) {
-    var pgxPage;
-    if (sketchPage == null) return pgxPage;
-
+function createPgx(sketchPage) {
+    var pgxPage = null;
     if (sketchPage.type == "page" || sketchPage.type == "library") {
         pgxPage = pageComponent.createPage(sketchPage);
         mapPageComponent(pgxPage, sketchPage.children);
@@ -4352,12 +4329,10 @@ function createCpx(cpxComponent, sketchComponent) {
     var cpxPage = {
         components: []
     };
-    var smartfaceComponent;
-    var type = sketchComponent.type;
+
     var savedID = sketchComponent.id;
     sketchComponent.id = sketchComponent.lib.libID;
-
-    if (type == "listview" || type == "gridview" || type == "listviewitem" || type == "gridviewitem") smartfaceComponent = pageComponent.createGridListView(sketchComponent);else if (type == "mapview" || type == "videoview" || type == "webview") smartfaceComponent = pageComponent.createMapVideoWebView(sketchComponent);else if (type == "flexlayout" || type == "scrollview") smartfaceComponent = pageComponent.createMultiComponent(sketchComponent);else if (type == "textbox" || type == "textarea") smartfaceComponent = pageComponent.createTextBoxArea(sketchComponent);else if (type == "button") smartfaceComponent = pageComponent.createButton(sketchComponent);else if (type == "imageview") smartfaceComponent = pageComponent.createImageView(sketchComponent);else if (type == "label") smartfaceComponent = pageComponent.createLabel(sketchComponent);else if (type == "slider") smartfaceComponent = pageComponent.createSlider(sketchComponent);else if (type == "switch") smartfaceComponent = pageComponent.createSwitch(sketchComponent);else if (type == "textview") smartfaceComponent = pageComponent.createTextView(sketchComponent);else if (type == "searchview") smartfaceComponent = pageComponent.createSearchView(sketchComponent);
+    var smartfaceComponent = createSmartfaceObject(sketchComponent);
 
     mappedLibrary.set(sketchComponent.lib.libID, smartfaceComponent.props.name);
 
@@ -4386,6 +4361,11 @@ function createCpx(cpxComponent, sketchComponent) {
     }
 
     cpxPages.push(cpxPage);
+}
+
+function createSmartfaceObject(sketchComponent) {
+    var type = sketchComponent.type;
+    if (type == "listview" || type == "gridview" || type == "listviewitem" || type == "gridviewitem") return pageComponent.createGridListView(sketchComponent);else if (type == "mapview" || type == "videoview" || type == "webview") return pageComponent.createMapVideoWebView(sketchComponent);else if (type == "flexlayout" || type == "scrollview") return pageComponent.createMultiComponent(sketchComponent);else if (type == "textbox" || type == "textarea") return pageComponent.createTextBoxArea(sketchComponent);else if (type == "button") return pageComponent.createButton(sketchComponent);else if (type == "imageview") return pageComponent.createImageView(sketchComponent);else if (type == "label") return pageComponent.createLabel(sketchComponent);else if (type == "slider") return pageComponent.createSlider(sketchComponent);else if (type == "switch") return pageComponent.createSwitch(sketchComponent);else if (type == "textview") return pageComponent.createTextView(sketchComponent);else if (type == "searchview") return pageComponent.createSearchView(sketchComponent);
 }
 
 module.exports = {
@@ -4438,51 +4418,51 @@ function createMultiComponent(sketchComponent) {
  * GridView and ListView map function
  */
 function createGridListView(sketchComponent) {
-    var grid_list_view = smartfaceUtil.createComponent();
-    smartfaceUtil.defaultPgxSetter(grid_list_view, sketchComponent);
-    smartfaceUtil.addChild(grid_list_view, sketchComponent);
+    var gridListView = smartfaceUtil.createComponent();
+    smartfaceUtil.defaultPgxSetter(gridListView, sketchComponent);
+    smartfaceUtil.addChild(gridListView, sketchComponent);
 
     var color = smartfaceUtil.colorMap(sketchComponent.property.color);
-    grid_list_view.userProps.backgroundColor = color;
+    gridListView.userProps.backgroundColor = color;
 
-    grid_list_view.userProps.flexProps.positionType = "ABSOLUTE";
+    gridListView.userProps.flexProps.positionType = "ABSOLUTE";
 
     if (sketchComponent.type == "gridview") {
         // GridView settings
-        grid_list_view.className = ".gridView";
-        grid_list_view.type = "GridView";
+        gridListView.className = ".gridView";
+        gridListView.type = "GridView";
     }
 
     if (sketchComponent.type == "gridviewitem") {
         // GridViewItem settings 
-        grid_list_view.className = ".gridViewItem";
-        grid_list_view.type = "GridViewItem";
-        grid_list_view.userProps.flexProps.positionType = "RELATIVE";
+        gridListView.className = ".gridViewItem";
+        gridListView.type = "GridViewItem";
+        gridListView.userProps.flexProps.positionType = "RELATIVE";
     }
 
     if (sketchComponent.type == "listview") {
         // ListView settings
-        grid_list_view.className = ".listView";
-        grid_list_view.type = "ListView";
+        gridListView.className = ".listView";
+        gridListView.type = "ListView";
     }
 
     if (sketchComponent.type == "listviewitem") {
         // ListViewItem settings
-        grid_list_view.className = ".listViewItem";
-        grid_list_view.type = "ListViewItem";
-        grid_list_view.userProps.flexProps.positionType = "RELATIVE";
+        gridListView.className = ".listViewItem";
+        gridListView.type = "ListViewItem";
+        gridListView.userProps.flexProps.positionType = "RELATIVE";
     }
 
     //-------------------------------//
 
-    smartfaceUtil.frameSetter(grid_list_view, sketchComponent);
-    smartfaceUtil.borderSetter(grid_list_view, sketchComponent); // Border set
-    smartfaceUtil.shadowSetter(grid_list_view, sketchComponent);
+    smartfaceUtil.frameSetter(gridListView, sketchComponent);
+    smartfaceUtil.borderSetter(gridListView, sketchComponent); // Border set
+    smartfaceUtil.shadowSetter(gridListView, sketchComponent);
     //--------------------------------//
 
-    smartfaceUtil.setSomeProprties(grid_list_view, sketchComponent);
+    smartfaceUtil.setSomeProprties(gridListView, sketchComponent);
 
-    return grid_list_view;
+    return gridListView;
 }
 
 function createSwitch(sketchComponent) {
@@ -4512,48 +4492,48 @@ function createSwitch(sketchComponent) {
  *  use that function 
  */
 function createMapVideoWebView(sketchComponent) {
-    var mvw_view = smartfaceUtil.createComponent();
-    smartfaceUtil.defaultPgxSetter(mvw_view, sketchComponent);
+    var vmwView = smartfaceUtil.createComponent();
+    smartfaceUtil.defaultPgxSetter(vmwView, sketchComponent);
     //----------------------------------//
 
     if (sketchComponent.type == "mapview") {
         // For MapView
-        mvw_view.className = ".mapView";
-        mvw_view.type = "MapView";
+        vmwView.className = ".mapView";
+        vmwView.type = "MapView";
     }
 
     if (sketchComponent.type == "videoview") {
         // For VideoView
-        mvw_view.className = ".videoView";
-        mvw_view.type = "VideoView";
+        vmwView.className = ".videoView";
+        vmwView.type = "VideoView";
     }
 
     if (sketchComponent.type == "webview") {
         // For WebView
-        mvw_view.className = ".webView";
-        mvw_view.type = "WebView";
+        vmwView.className = ".webView";
+        vmwView.type = "WebView";
     }
 
-    smartfaceUtil.frameSetter(mvw_view, sketchComponent);
-    smartfaceUtil.borderSetter(mvw_view, sketchComponent); // Border set
-    smartfaceUtil.shadowSetter(mvw_view, sketchComponent);
+    smartfaceUtil.frameSetter(vmwView, sketchComponent);
+    smartfaceUtil.borderSetter(vmwView, sketchComponent); // Border set
+    smartfaceUtil.shadowSetter(vmwView, sketchComponent);
     //--------------------------------//
-    mvw_view.userProps.flexProps.positionType = "ABSOLUTE";
+    vmwView.userProps.flexProps.positionType = "ABSOLUTE";
 
-    smartfaceUtil.setSomeProprties(mvw_view, sketchComponent);
+    smartfaceUtil.setSomeProprties(vmwView, sketchComponent);
 
-    return mvw_view;
+    return vmwView;
 }
 
 function createTextView(sketchComponent) {
-    var text_view = smartfaceUtil.createComponent();
-    smartfaceUtil.defaultPgxSetter(text_view, sketchComponent);
+    var textView = smartfaceUtil.createComponent();
+    smartfaceUtil.defaultPgxSetter(textView, sketchComponent);
 
-    text_view.className = ".textView";
-    text_view.type = "TextView";
+    textView.className = ".textView";
+    textView.type = "TextView";
 
     var color = smartfaceUtil.colorMap(sketchComponent.property.color);
-    text_view.userProps.backgroundColor = color;
+    textView.userProps.backgroundColor = color;
     var textArr = String(sketchComponent.text.text).split(" ");
     var text = "";
     for (var i = 0; i < textArr.length; i++) {
@@ -4561,19 +4541,19 @@ function createTextView(sketchComponent) {
         if (i + 1 != textArr.length) text += ' ';
     }
 
-    text_view.props.text = text;
-    text_view.userProps.text = text;
-    text_view.userProps.html = smartfaceUtil.sketchHTMLConverter(sketchComponent.html);
+    textView.props.text = text;
+    textView.userProps.text = text;
+    textView.userProps.html = smartfaceUtil.sketchHTMLConverter(sketchComponent.html);
     //---------------------------------//
-    smartfaceUtil.frameSetter(text_view, sketchComponent);
-    smartfaceUtil.borderSetter(text_view, sketchComponent); // Border set
-    smartfaceUtil.shadowSetter(text_view, sketchComponent);
+    smartfaceUtil.frameSetter(textView, sketchComponent);
+    smartfaceUtil.borderSetter(textView, sketchComponent); // Border set
+    smartfaceUtil.shadowSetter(textView, sketchComponent);
     //---------------------------------//
-    text_view.userProps.flexProps.positionType = "ABSOLUTE";
+    textView.userProps.flexProps.positionType = "ABSOLUTE";
 
-    smartfaceUtil.setSomeProprties(text_view, sketchComponent);
+    smartfaceUtil.setSomeProprties(textView, sketchComponent);
 
-    return text_view;
+    return textView;
 }
 
 function createSlider(sketchComponent) {

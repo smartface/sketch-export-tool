@@ -5,7 +5,6 @@ const UI = require('sketch/ui');
 var getValueFromPlugin;
 var imageFolder;
 var context_;
-var documents = require('sketch/dom').getDocuments();
 
 function sketchParseAll(context, folders) {
     let pages = [];
@@ -36,7 +35,6 @@ function sketchParseOnePage(context, folders, page, type) {
     getValueFromPlugin = context.command.valueForKey_onLayer_forPluginIdentifier
     imageFolder = folders.imageFolder;
     context_ = context;
-    //context.document.showMessage("🙌 MAPPING SMARTFACE 🙌")
     let pageTreeComp = sketchUtil.createPageObject();
     if (type[0] == "page")
         pageCreate(type, page, pageTreeComp);
@@ -118,12 +116,12 @@ function selectComponentType(page, pageTree) {
 function multi_component(type, page, pageTree) {
     var tree = pageComponent.is_Multi_Component(type, page, pageTree);
     var _page = page;
-    if (tree != null) {
-        if (page.type == "SymbolInstance") {
-            _page = sketchUtil.symbolInstanceFinder(page);
-        }
-        pageComponentParse(_page, tree);
+
+    if (page.type == "SymbolInstance") {
+        _page = sketchUtil.symbolInstanceFinder(page);
     }
+    pageComponentParse(_page, tree);
+
 }
 
 function exportImage(layer, folders) {
@@ -132,7 +130,6 @@ function exportImage(layer, folders) {
     UI.message("✅ Image Exported")
 }
 
-/* type : page#on_button , image#bakgrnd */
 function splitType(page) {
     var type = getValueFromPlugin("sf-tag", page.sketchObject, 'smartface.io');
     var lib = getValueFromPlugin("sf-library", page.sketchObject, 'smartface.io');

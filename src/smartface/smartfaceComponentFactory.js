@@ -37,49 +37,49 @@ function createMultiComponent(sketchComponent) {
  * GridView and ListView map function
  */
 function createGridListView(sketchComponent) {
-    var grid_list_view = smartfaceUtil.createComponent();
-    smartfaceUtil.defaultPgxSetter(grid_list_view, sketchComponent);
-    smartfaceUtil.addChild(grid_list_view, sketchComponent);
+    var gridListView = smartfaceUtil.createComponent();
+    smartfaceUtil.defaultPgxSetter(gridListView, sketchComponent);
+    smartfaceUtil.addChild(gridListView, sketchComponent);
 
     var color = smartfaceUtil.colorMap(sketchComponent.property.color);
-    grid_list_view.userProps.backgroundColor = color;
+    gridListView.userProps.backgroundColor = color;
 
-    grid_list_view.userProps.flexProps.positionType = "ABSOLUTE";
+    gridListView.userProps.flexProps.positionType = "ABSOLUTE";
 
 
     if (sketchComponent.type == "gridview") { // GridView settings
-        grid_list_view.className = ".gridView";
-        grid_list_view.type = "GridView";
+        gridListView.className = ".gridView";
+        gridListView.type = "GridView";
     }
 
     if (sketchComponent.type == "gridviewitem") { // GridViewItem settings 
-        grid_list_view.className = ".gridViewItem";
-        grid_list_view.type = "GridViewItem";
-        grid_list_view.userProps.flexProps.positionType = "RELATIVE";
+        gridListView.className = ".gridViewItem";
+        gridListView.type = "GridViewItem";
+        gridListView.userProps.flexProps.positionType = "RELATIVE";
     }
 
     if (sketchComponent.type == "listview") { // ListView settings
-        grid_list_view.className = ".listView";
-        grid_list_view.type = "ListView";
+        gridListView.className = ".listView";
+        gridListView.type = "ListView";
     }
 
     if (sketchComponent.type == "listviewitem") { // ListViewItem settings
-        grid_list_view.className = ".listViewItem";
-        grid_list_view.type = "ListViewItem";
-        grid_list_view.userProps.flexProps.positionType = "RELATIVE";
+        gridListView.className = ".listViewItem";
+        gridListView.type = "ListViewItem";
+        gridListView.userProps.flexProps.positionType = "RELATIVE";
     }
 
     //-------------------------------//
 
-    smartfaceUtil.frameSetter(grid_list_view, sketchComponent);
-    smartfaceUtil.borderSetter(grid_list_view, sketchComponent); // Border set
-    smartfaceUtil.shadowSetter(grid_list_view, sketchComponent);
+    smartfaceUtil.frameSetter(gridListView, sketchComponent);
+    smartfaceUtil.borderSetter(gridListView, sketchComponent); // Border set
+    smartfaceUtil.shadowSetter(gridListView, sketchComponent);
     //--------------------------------//
 
-    smartfaceUtil.setSomeProprties(grid_list_view, sketchComponent);
+    smartfaceUtil.setSomeProprties(gridListView, sketchComponent);
 
 
-    return grid_list_view;
+    return gridListView;
 }
 
 
@@ -110,45 +110,45 @@ function createSwitch(sketchComponent) {
  *  use that function 
  */
 function createMapVideoWebView(sketchComponent) {
-    var mvw_view = smartfaceUtil.createComponent();
-    smartfaceUtil.defaultPgxSetter(mvw_view, sketchComponent);
+    var vmwView = smartfaceUtil.createComponent();
+    smartfaceUtil.defaultPgxSetter(vmwView, sketchComponent);
     //----------------------------------//
 
     if (sketchComponent.type == "mapview") { // For MapView
-        mvw_view.className = ".mapView";
-        mvw_view.type = "MapView";
+        vmwView.className = ".mapView";
+        vmwView.type = "MapView";
     }
 
     if (sketchComponent.type == "videoview") { // For VideoView
-        mvw_view.className = ".videoView";
-        mvw_view.type = "VideoView";
+        vmwView.className = ".videoView";
+        vmwView.type = "VideoView";
     }
 
     if (sketchComponent.type == "webview") { // For WebView
-        mvw_view.className = ".webView";
-        mvw_view.type = "WebView";
+        vmwView.className = ".webView";
+        vmwView.type = "WebView";
     }
 
-    smartfaceUtil.frameSetter(mvw_view, sketchComponent);
-    smartfaceUtil.borderSetter(mvw_view, sketchComponent); // Border set
-    smartfaceUtil.shadowSetter(mvw_view, sketchComponent);
+    smartfaceUtil.frameSetter(vmwView, sketchComponent);
+    smartfaceUtil.borderSetter(vmwView, sketchComponent); // Border set
+    smartfaceUtil.shadowSetter(vmwView, sketchComponent);
     //--------------------------------//
-    mvw_view.userProps.flexProps.positionType = "ABSOLUTE";
+    vmwView.userProps.flexProps.positionType = "ABSOLUTE";
 
-    smartfaceUtil.setSomeProprties(mvw_view, sketchComponent);
+    smartfaceUtil.setSomeProprties(vmwView, sketchComponent);
 
-    return mvw_view;
+    return vmwView;
 }
 
 function createTextView(sketchComponent) {
-    var text_view = smartfaceUtil.createComponent();
-    smartfaceUtil.defaultPgxSetter(text_view, sketchComponent);
+    var textView = smartfaceUtil.createComponent();
+    smartfaceUtil.defaultPgxSetter(textView, sketchComponent);
 
-    text_view.className = ".textView";
-    text_view.type = "TextView";
+    textView.className = ".textView";
+    textView.type = "TextView";
 
     var color = smartfaceUtil.colorMap(sketchComponent.property.color);
-    text_view.userProps.backgroundColor = color;
+    textView.userProps.backgroundColor = color;
     var textArr = String(sketchComponent.text.text).split(" ");
     var text = "";
     for (var i = 0; i < textArr.length; i++) {
@@ -157,19 +157,19 @@ function createTextView(sketchComponent) {
             text += ' ';
     }
 
-    text_view.props.text = text;
-    text_view.userProps.text = text;
-    text_view.userProps.html = smartfaceUtil.sketchHTMLConverter(sketchComponent.html);
+    textView.props.text = text;
+    textView.userProps.text = text;
+    textView.userProps.html = smartfaceUtil.sketchHTMLConverter(sketchComponent.html);
     //---------------------------------//
-    smartfaceUtil.frameSetter(text_view, sketchComponent);
-    smartfaceUtil.borderSetter(text_view, sketchComponent); // Border set
-    smartfaceUtil.shadowSetter(text_view, sketchComponent);
+    smartfaceUtil.frameSetter(textView, sketchComponent);
+    smartfaceUtil.borderSetter(textView, sketchComponent); // Border set
+    smartfaceUtil.shadowSetter(textView, sketchComponent);
     //---------------------------------//
-    text_view.userProps.flexProps.positionType = "ABSOLUTE";
+    textView.userProps.flexProps.positionType = "ABSOLUTE";
 
-    smartfaceUtil.setSomeProprties(text_view, sketchComponent);
+    smartfaceUtil.setSomeProprties(textView, sketchComponent);
 
-    return text_view;
+    return textView;
 }
 
 
@@ -380,7 +380,7 @@ function createHeaderBar(page) {
     headerBar.props.isRemovable = false;
     headerBar.props.name = "headerBar";
     headerBar.props.parent = page.id;
-    var title = page.props.name;
+    let title = page.props.name;
     headerBar.props.title = title;
     headerBar.userProps.title = title;
     return headerBar;

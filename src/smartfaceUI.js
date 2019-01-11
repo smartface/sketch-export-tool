@@ -21,7 +21,7 @@ export default function(context) {
     var notify;
     var browserWindow = new BrowserWindow(options)
     const webContents = browserWindow.webContents
-
+    var resizeWarn = "false";
 
     // add a handler for a call from web content's javascript
     webContents.on('set-type', (data) => {
@@ -31,10 +31,8 @@ export default function(context) {
 
         var sf_type = String(data);
 
-        if (isValidName(name, sf_type)) {
-            log("❌Component name is invalid❌")
-            UI.message("❌ Component name is invalid ❌")
-        }
+        if (isValidName(name, sf_type))
+            UI.message("❌ Invalid component name")
         context.command.setValue_forKey_onLayer_forPluginIdentifier(sf_type, "sf-tag", selectedLayer, 'smartface.io');
         if (sf_type == "listviewitem" || sf_type == "gridviewitem")
             context.command.setValue_forKey_onLayer_forPluginIdentifier("true", "sf-library", selectedLayer, 'smartface.io');
@@ -47,13 +45,13 @@ export default function(context) {
     webContents.on('set-class', (data) => {
         var selectedLayer = context.document.selectedLayers().firstLayer();
         var sfClass = String(data);
-        if (sfClass != null) {
+        if (sfClass !== "") {
             context.command.setValue_forKey_onLayer_forPluginIdentifier(sfClass, "sf-class", selectedLayer, 'smartface.io');
             addClassNames(allClassNames, sfClass)
             context.document.saveDocument(nil);
-            UI.message("Class Perfect Set ✅")
+            UI.message("✅ Class name assignment successful")
         } else
-            UI.message("❌ Something Wrong Class Not Assigned")
+            UI.message("❌ Class name could not be assigned, please specify a new name")
     });
 
     webContents.on('exportbtn', (data) => {
@@ -66,13 +64,13 @@ export default function(context) {
     webContents.on('set-library', (data) => {
         var selectedLayer = context.document.selectedLayers().firstLayer();
         var sfLib = String(data);
-        if (sfLib != null && selectedLayer != null) {
+        if (sfLib !== "" && selectedLayer != null) {
             context.command.setValue_forKey_onLayer_forPluginIdentifier(sfLib, "sf-library", selectedLayer, 'smartface.io');
             context.document.saveDocument(nil);
             if (sfLib == "false")
-                UI.message("Library Disabled ✅")
+                UI.message("✅ Object removed from the library items")
             else
-                UI.message("Library Perfect Set ✅")
+                UI.message("✅ Object set as a library item ")
         } else
             UI.message("❌ Something Wrong Library Not Assigned")
     });
@@ -133,18 +131,19 @@ export default function(context) {
 
 
             var data = JSON.stringify({
-                    name: "" + name,
-                    type: "" + type,
-                    nameCheck: nameCheck,
-                    className: String(className),
-                    library: String(library),
-                    allresize: JSON.parse(allresize),
-                    changed: changed
-                })
-                // UI.message(String(data.className))
-            webContents.executeJavaScript(`setLayerName(${data})`);
+                name: "" + name,
+                type: "" + type,
+                nameCheck: nameCheck,
+                className: String(className),
+                library: String(library),
+                allresize: JSON.parse(allresize),
+                changed: changed,
+                resizeWarn: resizeWarn
+            })
+
+            webContents.executeJavaScript(`setShow(${data})`);
         } else
-            webContents.executeJavaScript(`setLayerName({})`)
+            webContents.executeJavaScript(`setShow({})`)
 
         if (browserWindow.isDestroyed()) {
             UI.message("😱");
@@ -209,13 +208,13 @@ function setLibraryItem(layer, sf_type) {
         for (var i = 0; i < documents.length; i++) {
             var val = documents[i].getSymbolMasterWithID(item.symbolId)
             if (val != null) {
-                var d = context_.command.setValue_forKey_onLayer_forPluginIdentifier(sf_type, "sf-tag", val.sketchObject, 'smartface.io');
-                UI.message("✅ Perfect Set Object & SymbolInstance")
+                context_.command.setValue_forKey_onLayer_forPluginIdentifier(sf_type, "sf-tag", val.sketchObject, 'smartface.io');
+                UI.message("✅ Object & SymbolInstance matching successful")
                 val = null;
             }
         }
     } else
-        UI.message("✅ Perfect Set")
+        UI.message("✅ Type assignment successful")
 }
 
 /**
@@ -231,7 +230,9 @@ function setResize(layer, resize) {
     if (resizeCheck(resizeObject, resize)) {
         resizeObject[resize] = !resizeObject[resize];
         context_.command.setValue_forKey_onLayer_forPluginIdentifier(JSON.stringify(resizeObject), "sf-resize", layer, 'smartface.io');
-    }
+        resizeWarn = "false";
+    } else
+        resizeWarn = "true";
 }
 
 function resizeCheck(resizeObject, resize) {
@@ -254,6 +255,7 @@ function creteResize(layer) {
         right: false
     }
     context_.command.setValue_forKey_onLayer_forPluginIdentifier(JSON.stringify(resizeObject), "sf-resize", layer, 'smartface.io');
+    return resizeObject
 }
 
 function getResize(layer) {

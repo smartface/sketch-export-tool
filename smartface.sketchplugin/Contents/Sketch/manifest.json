@@ -4,24 +4,24 @@
   "icon": "icon.png",
   "commands": [
     {
-      "name": "Export All",
+      "name": "Export All Pages",
       "identifier": "map.all",
       "script": "mapAll.js"
     },
     {
-      "name": "Window",
+      "name": "Show",
       "identifier": "sf_ui",
       "script": "smartfaceUI.js"
     }
   ],
   "menu": {
-    "title": "smartface",
+    "title": "Smartface",
     "items": [
       "sf_ui",
       "map.all"
     ]
   },
-  "version": "0.1.2",
+  "version": "0.1.3",
   "name": "smartface",
   "disableCocoaScriptPreprocessor": true,
   "appcast": "https://raw.githubusercontent.com//master/.appcast.xml"

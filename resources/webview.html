@@ -17,14 +17,14 @@
         <span class="objectFrame object type" >TYPE</span>
 		
         <select class="objectFrame dropDown" name="drop1" id="sf_type_list" >
-        	<option value="null">NONTYPE</option>
+        	<option value="null">NONE</option>
         	<option value="page">PAGE</option>  
         	<option value="button">Button</option>
         	<option value="flexlayout">FlexLayout</option> 
         	<option value="gridview">GridView</option>  
         	<option value="gridviewitem">GridViewItem</option>  
         	<option value="headerbar">HeaderBar</option>  
-        	<option value="shape">ImageObject</option>  
+        	<option value="shape">Image</option>  
         	<option value="imageview">ImageView</option>
         	<option value="label">Label</option>
             <option value="listview">ListView</option>  
@@ -44,8 +44,9 @@
         <input type="checkbox" class="objectFrame checkBox" id="checkBox" value="off">
 
         <span class="objectFrame addLib" >Add to Library</span>
-
-    	<img class="objectFrame info" src="webviewImages/infoButton.png" />
+         <!––
+    	   <img class="objectFrame info" src="webviewImages/infoButton.png" / 
+        ––>
  
 		<img class="classFrame" src="webviewImages/classFrame.png" />
         <span class="classFrame class" >CLASS SETTINGS</span>
@@ -54,7 +55,7 @@
 		<input type="text" id="setClass" class="classFrame nameText" placeholder="Type Class Name" >
         <span  type="text" id="className"  class="classFrame nameText label"></span>
 
-        <span class="classFrame class layout" >LAYOUT</span>
+        <span id="test" class="classFrame class layout" >LAYOUT</span>
 
         <span id="top" class="classFrame layoutUp paint" ></span>
         <span id="right" class="classFrame layoutRight paint" ></span>
@@ -74,7 +75,7 @@
         <img class= "exportButton disable" id="exportbtnDisable" src="webviewImages/exportButtonDisable.png" />
 		<img class= "exportButton" id="exportbtn" src="webviewImages/exportButton.png" />
         
-        
+
 		<script src="../webview.js"></script>
 	</body>
 </html>
