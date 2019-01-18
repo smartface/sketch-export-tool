@@ -5,6 +5,8 @@
 
 A Sketch plugin that exports **Sketch** artboards into **Smartface** project
 
+Sketch version 51.3 is supported.
+
 ## Installation
 - <a href="https://github.com/smartface/sketch-export-tool/releases/download/v0.1.3/smartface.sketchplugin.zip" target="blank">Download</a> the latest release of the plugin
 -   Unzip the **smartface.sketchplugin.zip** file 
